@@ -90,7 +90,7 @@ public class PlayersSetUp extends AppCompatActivity implements View.OnClickListe
         //save only the number of the button
         int gameStatePointer = Integer.parseInt(
                 buttonID.substring(buttonID.length() - 1, buttonID.length())
-        );
+        )-1;
 
         if (activePlayer) {
             ((Button) view).setText("X");
@@ -123,6 +123,9 @@ public class PlayersSetUp extends AppCompatActivity implements View.OnClickListe
         } else if (rountCount == 8) {
 //            playAgain();
             playerStatus.setText("No Winner...");
+            for (int i = 0; i < buttons.length; i++) {
+                buttons[i].setEnabled(false);
+            }
 
         } else {
             activePlayer = !activePlayer;
