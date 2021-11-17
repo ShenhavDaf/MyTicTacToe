@@ -1,8 +1,10 @@
 package com.example.tictactoe;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +44,7 @@ public class PlayersSetUp extends AppCompatActivity implements View.OnClickListe
         resetGameBtn = (Button) findViewById(R.id.reset_btn);
 
         for (int i = 0; i < buttons.length; i++) {
-            int resourceID = getResources().getIdentifier("btn" + (i+1), "id", getPackageName());
+            int resourceID = getResources().getIdentifier("btn" + (i + 1), "id", getPackageName());
             buttons[i] = (Button) findViewById(resourceID);
             buttons[i].setOnClickListener(this);
         }
@@ -54,30 +56,27 @@ public class PlayersSetUp extends AppCompatActivity implements View.OnClickListe
     ///////////////////////////////////////////////////////////////////
 
     public void playAgainOnClick(View view) {
-        activePlayer = true;
-        for (int i = 0; i < buttons.length; i++) {
-            gameState[i] = 2;
-            buttons[i].setText("");
-        }
+        playAgain();
     }
 
     public void homeBackOnClick(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     ////////////////////////////////////////////////////////////////////
 
 
     public void playAgain() {
-        activePlayer = true;
-        rountCount = 0;
-        playerStatus.setText("X Play");
         for (int i = 0; i < buttons.length; i++) {
             gameState[i] = 2;
             buttons[i].setText("");
             buttons[i].setEnabled(true);
+            buttons[i].setBackgroundColor(getResources().getColor(R.color.grayBtn));
         }
+
+        activePlayer = true;
+        rountCount = 0;
+        playerStatus.setText("X Play");
     }
 
     @Override
@@ -90,7 +89,7 @@ public class PlayersSetUp extends AppCompatActivity implements View.OnClickListe
         //save only the number of the button
         int gameStatePointer = Integer.parseInt(
                 buttonID.substring(buttonID.length() - 1, buttonID.length())
-        )-1;
+        ) - 1;
 
         if (activePlayer) {
             ((Button) view).setText("X");
@@ -113,15 +112,11 @@ public class PlayersSetUp extends AppCompatActivity implements View.OnClickListe
             }
 
             if (activePlayer) {
-                playerStatus.setText("X Won");
+                playerStatus.setText("X Won 🎉");
+            } else {
+                playerStatus.setText("O Won 🎉");
             }
-            else{
-                    playerStatus.setText("O Won");
-                }
-//            playAgain();
-
-        } else if (rountCount == 8) {
-//            playAgain();
+        } else if (rountCount == 9) {
             playerStatus.setText("No Winner...");
             for (int i = 0; i < buttons.length; i++) {
                 buttons[i].setEnabled(false);
@@ -131,13 +126,12 @@ public class PlayersSetUp extends AppCompatActivity implements View.OnClickListe
             activePlayer = !activePlayer;
         }
 
-        resetGameBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playAgain();
-                playerStatus.setText("");
-            }
-        });
+//        resetGameBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                playAgain();
+//            }
+//        });
 
     }
 
@@ -148,8 +142,14 @@ public class PlayersSetUp extends AppCompatActivity implements View.OnClickListe
             if (gameState[winningPos[0]] != 2 &&
                     gameState[winningPos[0]] == gameState[winningPos[1]] &&
                     gameState[winningPos[1]] == gameState[winningPos[2]]
-            )
+            ) {
                 winnerResult = true;
+//
+                buttons[winningPos[0]].setBackgroundColor(getResources().getColor(R.color.winGreen));
+                buttons[winningPos[1]].setBackgroundColor(getResources().getColor(R.color.winGreen));
+                buttons[winningPos[2]].setBackgroundColor(getResources().getColor(R.color.winGreen));
+
+            }
         }
 
         return winnerResult;
